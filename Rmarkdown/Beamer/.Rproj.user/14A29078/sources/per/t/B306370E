@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1585075468210.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2952774002",
+    "id" : "B306370E",
+    "lastKnownWriteTime" : 1585075474,
+    "last_content_update" : 1585075474805,
+    "path" : "~/Git Hub/R/R/Rmarkdown/Beamer/t1.tex",
+    "project_path" : "t1.tex",
+    "properties" : {
+        "cursorPosition" : "11,31",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "tex"
+}

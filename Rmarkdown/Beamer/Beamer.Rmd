@@ -1,0 +1,55 @@
+---
+title: Template Presentacion 
+subtitle: Copia varios repositorios
+author: Jhon Flores Rojas
+institute: UNCP
+date: "`r format(Sys.time(), '%d %m, %Y')`"
+output:
+  beamer_presentation:
+    includes:
+      in_header: t1.tex
+    theme: CambridgeUS
+    colortheme: lily
+    slide_level: 2
+    incremental: true # numeraciones 
+    #keep_tex: true
+    #keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+# Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+# Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
+
+## algo 
+
+falksjfowie uroiewurw
+
+### decir
+
+ecuacion $Euler$
+
