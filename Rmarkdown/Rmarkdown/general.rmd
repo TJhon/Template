@@ -1,0 +1,226 @@
+---
+title: "R markdown - Configuraciones utiles"
+author: "Jhon Flores Rojas"
+date: "`r format(Sys.Date(), '%a %d %B, %Y')`"
+output:
+  html_document:
+    df_print: paged
+email: fr.jhonk@gmail.com
+---
+
+# Contro de versiones (GitHub)
+
+Mediante la terminal usar estos comandos 
+
+## Configuracion de usuario
+
+```
+git config --global user.email "you@example.com" 
+git config --global user.name "Your Name"
+```
+Los anteriores sin comillas 
+
+## Clonar el repositorio para la salida de documento
+```
+git clone -b gh-pages \
+https://${GITHUB_PAT}@github.com/${TRAVIS_REPO_SLUG}.git \
+book-output
+cd book-output
+git rm -rf *
+       cp -r ../_book/* ./
+       git add --all *
+       git commit -m"Update the book"
+git push -q origin gh-pages
+```
+# Yaml 
+
+| Configuracion de yaml^[dentro del codigo omite "#"]
+| Mas configuraciones disponibles en RmArkdown Cookbook^[[Cookbook ](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html)]
+
+```yaml
+---
+title: | # Configuracion avanzada para insertar alguna imagen dentro del titulo
+       ![](logo.jpg){width=1in} # localizacion del logo con un tamano especifico
+       Adding a Logo to LaTeX Title # titulo
+author: "Jhon"
+date: "2018-02-14" o 
+#date: `r format(Sys.Date(), '%a %d %B, %Y,')` este ultimo para automatizar el documento a fechas actualizables
+output: # salida del documento
+  pdf_document: # pdf
+       toc: true   # indice
+       extra_dependencies: "subfig" #varias figuras, unidas con referencias
+       toc_bib: true # 
+       include: # se puede agregar una portada adicional o apendices extraidos
+              in_header: "path" # .tex para algunas configuraciones en LaTeX o como el que le sige 
+              before_body: latex/before_body.tex # Introducciones no incluida como capitulo (El codigo es carpeta latex, archivo .tex)
+              after_body: latex/after_body.tex # Anexos 
+  word_document:
+       reference_docx: "template.docx" # Configura tablas titulos parrafos, incluidos en el template
+  html_document: default # Para salidas en Html, ver mas configuraciones Al final
+  bookdown::pdf_book:
+              include:
+                     in_header: #El mismo proposito que el anterior pdf_document
+  bookdown::word_document2: default  # Para referencias cruzadas en Word
+bibliography: ["one.bib", "another.bib", "yet-another.bib"] # Bibliografia de referencia, tambien es en carpetas lo mismo que lo anterior
+biblio-style: "apalike" # Formato APA
+link-citations: true # 
+keep_tex: yes # Conservar el archivo .tex 
+keep_md: yes # Conservar archivo .md
+latex_engine: xelatex # Motor de Miktex
+citation_package: natbib # Configiuracion de las citaciones
+toc_unnumbered: no # PArtes exluyentes
+toc_appendix: yes # Incluir en el indice los anexos
+params: #Requiere knit with parametro y .tex (floating)
+  state: Nebraska #Requiere knit with parametro y .tex (floating)
+  year: 2019 #Requiere knit with parametro y .tex (floating)
+  midwest: true #Requiere knit with parametro y .tex (floating)
+---
+```
+
+
+# Chunks
+
+Chumks^[[opciones](https://yihui.org/knitr/options/)]
+
+## General
+
+
+```r
+knitr::opts_chunk$set(fig.pos = "H", # Fijar posicion de las figuras 
+                      echo = T, # si es FALSE Correr el codigo pero mostrarlo
+                      message = T, # si es FALSE Mensajes omitidos
+                      warning = T, # si es FALSE Advertencias omitidas
+                      include = T, # si es FALSE 
+                      out.extra = "", 
+                      cache = T, # 
+                      ) 
+````
+
+## Opciones
+
+```r
+options(knitr.duplicate.label = "allow", # permitir Chunk names repetidos
+        knitr.table.format = function() { # funcione de acuerdo a la salida del texto
+  if (knitr::is_latex_output()) 'latex' else 'pandoc'
+}, digits = 3, 
+kableExtra.auto_format = FALSE
+) #Evitar problemas cuando la salida es un word en kable extra 
+```
+
+> Si se usa library(KableExtra) evitar usar knitr::kable
+
+# Knitr 
+
+
+## Knitr::kable (tablas)
+
+
+``` r
+knitr::kable(d, # Data frame, tibbl o listas
+       digits = 3, # Similar a un round(x, 3)
+       format.args = list(big.mark = " ",   # Cuando se tiene mas de 3 digitos se incluye espacio en " "
+                                          #se puede cambiar por comas
+                     scientific = FALSE),  # evitar notacion cientificas
+escape = FALSE) # Incluir expresiones matematicas 
+```
+
+## KableExtra 
+
+> [KableExtra]https://haozhu233.github.io/kableExtra/awesome_table_in_pdf.pdf)
+
+`install.package(KableExtra")`, `library(KableExtra)`
+
+```r
+kable(dt, #data 
+       longtable = T # guardar espacio
+       "latex",  # salida
+       booktabs = T, # 
+       caption = "Titulos de la tabla",
+       escape = F # incluir expresiones matematicas
+       align = "c") %>% # al centro
+              column_spec(1, bold=T) %>%#(x)
+              row_spec(1, bold = T) %>% # (y)
+              cell_spec(1,2) %>% #Corrdenadas (x,y)
+              collapse_rows(columns = 1:2, latex_hline = "major", valign = "middle") 
+```
+
+# Modelos
+
+## Extraccion de modelos 
+
+[Equatiomatic](https://github.com/datalorax/equatiomatic)
+
+```r
+fit <- lm(mpg ~ cyl + disp, mtcars) # modelo 
+
+equatiomatic::extract_eq(fit) # Mostrar el modelo teorico 
+```
+Modelo con coeficientes
+
+```r 
+equatiomatic::extract_eq(fit, 
+       use_coefs = TRUE) # Mostrar el modelo con los coeficientes
+```
+
+Notar en el chunck la especificacion de result = 'asis', `{r, result = "asis"}` 
+
+
+# Graficos
+
+## Subgraficos
+
+`{r fig-sub, fig.cap='All', fig.subcap=c('A', 'B', 'C'), fig.ncol = 2, out.width = "50%", fig.align = "center"}`
+
+De lo anterior
+- fig.cap = "titulo general"
+- fig.subcap = "Subtitulos en orden izquierda a derecha"
+- fig.ncol = 2 # w columnas
+- out.with = "50%" subgraficos a la mitad de su tamano
+- fig.align = "center" # Figuras al centro
+
+```r 
+plot(1:10) # sub.cap "A"
+plot(cars, pch = 19) sub.cap "B"
+boxplot(Sepal.Width ~ Species, data = iris) "C"
+```
+## Graficos con Ecucaiones
+
+> Importante `{r, dev = "tikz"}`
+
+```r 
+par(mar = c(4, 4, 2, .1))
+curve(dnorm, -3, 3, xlab = '$x$', ylab = '$\\phi(x)$',
+      main = 'The density function of $N(0, 1)$')
+text(-1, .2, cex = 3, col = 'blue',
+  '$\\phi(x)=\\frac{1}{\\sqrt{2\\pi}}e^{\\frac{-x^2}{2}}$')
+```
+
+# Codigo 
+
+## Llamar a codigos ya realizados 
+
+Este metodo utilizado con la finalidad de guardar espacio en el documento, normalmente se usa una caprteta que tenga archivos .R, y son llamados para ser evaluados en el Rmarkdown
+
+
+> `{r code=readLines('code/algo.R')}` 
+
+# Apendice
+
+## Mostrar todos lo codigos utilizados
+
+```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
+```
+## Librerias utiles
+
+- Graficas aparte de DiagrammeR [plantum](https://github.com/rkrug/plantuml)
+- De word a .Rmd [redoc](https://github.com/noamross/redoc)
+- Configuracion de la salida a word [offcran](https://davidgohel.github.io/officer/articles/offcran/word.html)
+- Equaciones no manuales [equatiomatic](https://github.com/datalorax/equatiomatic)
+- Analisis de datos complejos [srvyr](https://github.com/gergness/srvyr)
+
+## Libros 
+
+
+- Chunk [opciones](https://yihui.org/knitr/options/)
+- [bookdown](https://bookdown.org/ana_vm/_book/citas-y-referencias.html)
+- [Rladies](https://bookdown.org/thea_knowles/dissertating_rmd_presentation/)
