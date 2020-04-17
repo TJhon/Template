@@ -3,9 +3,9 @@ title: "R markdown - Configuraciones utiles"
 author: "Jhon Flores Rojas"
 date: "`r format(Sys.Date(), '%a %d %B, %Y')`"
 output:
-  html_document:
-    df_print: paged
-email: fr.jhonk@gmail.com
+  pdf_document:
+      include:
+          template: "latex/pre.tex"
 ---
 
 # Contro de versiones (GitHub)
@@ -22,8 +22,7 @@ Los anteriores sin comillas
 
 ## Clonar el repositorio para la salida de documento
 ```
-git clone -b gh-pages \
-https://${GITHUB_PAT}@github.com/${TRAVIS_REPO_SLUG}.git \
+git clone ""
 book-output
 cd book-output
 git rm -rf *
