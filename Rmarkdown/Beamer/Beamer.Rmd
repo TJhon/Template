@@ -3,7 +3,7 @@ title: Template Presentacion
 subtitle: Copia varios repositorios
 author: Jhon Flores Rojas
 institute: UNCP
-date: "`r format(Sys.time(), '%d %m, %Y')`"
+date: "`r format(Sys.Date(), '%a %d %B, %Y')`"
 output:
   beamer_presentation:
     includes:
