@@ -6,75 +6,11 @@ output:
   pdf_document:
       include:
           template: "latex/pre.tex"
+          in_header: "latex/pre1.tex"
+#header-includes:
+#   - \usepackage[spanish]{babel}
+toc: true
 ---
-
-# Contro de versiones (GitHub)
-
-Mediante la terminal usar estos comandos 
-
-## Configuracion de usuario
-
-```
-git config --global user.email "you@example.com" 
-git config --global user.name "Your Name"
-```
-Los anteriores sin comillas 
-
-## Clonar el repositorio para la salida de documento
-```
-git clone ""
-book-output
-cd book-output
-git rm -rf *
-       cp -r ../_book/* ./
-       git add --all *
-       git commit -m"Update the book"
-git push -q origin gh-pages
-```
-# Yaml 
-
-| Configuracion de yaml^[dentro del codigo omite "#"]
-| Mas configuraciones disponibles en RmArkdown Cookbook^[[Cookbook ](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html)]
-
-```yaml
----
-title: | # Configuracion avanzada para insertar alguna imagen dentro del titulo
-       ![](logo.jpg){width=1in} # localizacion del logo con un tamano especifico
-       Adding a Logo to LaTeX Title # titulo
-author: "Jhon"
-date: "2018-02-14" o 
-#date: `r format(Sys.Date(), '%a %d %B, %Y,')` este ultimo para automatizar el documento a fechas actualizables
-output: # salida del documento
-  pdf_document: # pdf
-       toc: true   # indice
-       extra_dependencies: "subfig" #varias figuras, unidas con referencias
-       toc_bib: true # 
-       include: # se puede agregar una portada adicional o apendices extraidos
-              in_header: "path" # .tex para algunas configuraciones en LaTeX o como el que le sige 
-              before_body: latex/before_body.tex # Introducciones no incluida como capitulo (El codigo es carpeta latex, archivo .tex)
-              after_body: latex/after_body.tex # Anexos 
-  word_document:
-       reference_docx: "template.docx" # Configura tablas titulos parrafos, incluidos en el template
-  html_document: default # Para salidas en Html, ver mas configuraciones Al final
-  bookdown::pdf_book:
-              include:
-                     in_header: #El mismo proposito que el anterior pdf_document
-  bookdown::word_document2: default  # Para referencias cruzadas en Word
-bibliography: ["one.bib", "another.bib", "yet-another.bib"] # Bibliografia de referencia, tambien es en carpetas lo mismo que lo anterior
-biblio-style: "apalike" # Formato APA
-link-citations: true # 
-keep_tex: yes # Conservar el archivo .tex 
-keep_md: yes # Conservar archivo .md
-latex_engine: xelatex # Motor de Miktex
-citation_package: natbib # Configiuracion de las citaciones
-toc_unnumbered: no # PArtes exluyentes
-toc_appendix: yes # Incluir en el indice los anexos
-params: #Requiere knit with parametro y .tex (floating)
-  state: Nebraska #Requiere knit with parametro y .tex (floating)
-  year: 2019 #Requiere knit with parametro y .tex (floating)
-  midwest: true #Requiere knit with parametro y .tex (floating)
----
-```
 
 
 # Chunks
